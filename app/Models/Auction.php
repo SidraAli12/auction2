@@ -14,6 +14,7 @@ class Auction extends Model
         'product',
         'auction_start',
         'auction_end',
+        'status'
     ];
 
     public function user()

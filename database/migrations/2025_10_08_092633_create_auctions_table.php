@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('product');
-            $table->timestamp('auction_start');
-            $table->timestamp('auction_end');
+            $table->timestamp('auction_start')->nullable();
+            $table->timestamp('auction_end')->nullable();
             $table->timestamps();
         });
     }

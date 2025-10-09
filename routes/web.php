@@ -3,6 +3,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuctionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BidController;
+
 
 
 Route::get('/', fn() => redirect()->route('login.form'));
@@ -16,10 +18,13 @@ Route::get('login', [LoginController::class, 'showForm'])->name('login.form');
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-// Dashboard (protected)
-Route::middleware('auth')->get('/dashboard', function () {
+    Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-//Auctions CRUD (next step)
 Route::middleware('auth')->resource('auctions', AuctionController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/bids/{auction}/create', [BidController::class, 'create'])->name('bids.create');
+    Route::post('/bids/{auction}', [BidController::class, 'store'])->name('bids.store');
+});
