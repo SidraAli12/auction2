@@ -15,18 +15,15 @@ class BidController extends Controller
     {
     $auction = Auction::findOrFail($auctionId);
 
-    // Sellers cannot bid
-    if (Auth::user()->role !== 'buyer') {
+    if (Auth::user()->role !== 'buyer') { //yaha buyer ky ilawa aur koi bhi bit nhi laga sakhtaa
         return redirect()->route('auctions.index')->with('error', 'Only buyers can place bids.');
     }
 
-    // cannot bid on own auction (edge case if a seller tried)
     if ($auction->user_id === Auth::id()) {
         return redirect()->route('auctions.index')->with('error', 'You cannot bid on your own auction.');
     }
 
-    // cannot bid on expired or sold auctions or on pending ones
-    if ($auction->status !== 'started') {
+    if ($auction->status !== 'started') { //expired aur sold pr bid nhinlaga sakhty 
         return redirect()->route('auctions.index')->with('error', 'This auction is not open for bidding.');
     }
 
