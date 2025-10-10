@@ -9,7 +9,10 @@ class Bid extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['auction_id', 'user_id', 'price'];
+    protected $fillable = ['auction_id', 'user_id', 'price','winner'];
+    protected $casts = [
+    'winner' => 'boolean',
+];
 
     public function auction()
     {

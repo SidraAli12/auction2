@@ -25,12 +25,16 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6', //Hash::make(), meaning it’s securely encrypted.
+                'role' => 'required|in:buyer,seller',
+
         ]);
 
         $user = User::create([
             'name' => $request->name,  //yaha hum jo reg karty hue fields dengy aur user create karengy 
             'email' => $request->email,
             'password' => Hash::make($request->password),
+                'role' => $request->role,
+
         ]);
 
         Auth::login($user);
