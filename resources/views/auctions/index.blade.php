@@ -4,9 +4,14 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Your Auctions</h3>
-        <a href="{{ route('auctions.create') }}" class="btn btn-primary btn-sm">+ Create Auction</a>
+
+        {{-- Only show "Create Auction" button if user is a Seller --}}
+        @if(Auth::user()->role === 'seller')
+            <a href="{{ route('auctions.create') }}" class="btn btn-primary btn-sm">+ Create Auction</a>
+        @endif
     </div>
 
+    {{-- Success message --}}
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -42,19 +47,32 @@
                     </td>
 
                     <td>
-                        <a href="{{ route('auctions.edit', $auction->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        {{-- Seller Actions --}}
+                        @if(Auth::user()->role === 'seller' && Auth::id() === $auction->user_id)
+                            {{-- View Bids Button --}}
+                            <a href="{{ route('auctions.bids', $auction->id) }}" class="btn btn-info btn-sm me-1">
+                          View Bids
+                              </a>
 
-                        <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this auction?')">Delete</button>
-                        </form>
 
-                        <a href="{{ route('bids.create', $auction->id) }}" 
-                           class="btn btn-success btn-sm ms-1" 
-                           style="font-weight: 500;">
-                         Place Bid
-                        </a>
+                            {{-- Edit/Delete --}}
+                            <a href="{{ route('auctions.edit', $auction->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                            <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this auction?')">Delete</button>
+                            </form>
+                        @endif
+
+                        {{-- Buyer Action --}}
+                        @if(Auth::user()->role === 'buyer' && Auth::id() !== $auction->user_id)
+                            <a href="{{ route('bids.create', $auction->id) }}" 
+                               class="btn btn-success btn-sm ms-1" 
+                               style="font-weight: 500;">
+                               Place Bid
+                            </a>
+                        @endif
                     </td>
                 </tr>
             @empty

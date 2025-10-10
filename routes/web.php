@@ -28,3 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/bids/{auction}/create', [BidController::class, 'create'])->name('bids.create');
     Route::post('/bids/{auction}', [BidController::class, 'store'])->name('bids.store');
 });
+// View all bids for a seller's auction
+Route::get('/auctions/{auction}/bids', [AuctionController::class, 'bids'])
+    ->name('auctions.bids');
+
+// Accept a specific bid (mark as winner)
+Route::post('/auctions/{auction}/bids/{bid}/accept', [AuctionController::class, 'acceptBid'])
+    ->name('auctions.acceptBid');
+    // Route::get('/auctions/{auction}/bids', [AuctionController::class, 'showBids'])
+    // ->name('auctions.showBids');
+

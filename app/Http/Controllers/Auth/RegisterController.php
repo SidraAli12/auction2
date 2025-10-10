@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class RegisterController extends Controller
 {
     
-    public function showForm()  //This method simply shows the registration page.
+    public function showForm()  
     //ye func bladeform register ka show kry ge 
     {
         return view('auth.register');
