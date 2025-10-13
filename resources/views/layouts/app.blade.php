@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auctions App</title>
-
-    {{-- Bootstrap CSS --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -24,7 +22,7 @@
     </style>
 </head>
 <body>
-    {{-- 🔹 Navigation Bar --}}
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 py-3">
         <a href="{{ route('dashboard') }}" class="navbar-brand fw-bold text-primary">
              Auctions
@@ -44,12 +42,12 @@
         </div>
     </nav>
 
-    {{-- 🔹 Page Content --}}
+    
     <div class="container mt-4 mb-5">
         @yield('content')
     </div>
 
-    {{-- Bootstrap JS --}}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
