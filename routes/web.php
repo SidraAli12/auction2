@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuctionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\MessageController;
+
 
 
 
@@ -33,4 +35,7 @@ Route::get('/auctions/{auction}/bids', [AuctionController::class, 'bids'])
 
 Route::post('/auctions/{auction}/bids/{bid}/accept', [AuctionController::class, 'acceptBid'])
     ->name('auctions.acceptBid');
+
+    Route::get('/message/create/{receiver}', [MessageController::class, 'create'])->name('messages.create');
+Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
 

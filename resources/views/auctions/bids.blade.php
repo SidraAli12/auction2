@@ -46,6 +46,9 @@
                                     </button>
                                 </form>
                             @endif
+                            <a href="{{ route('messages.create', $bid->user_id) }}" class="btn btn-sm btn-primary mt-1">
+                                    Message
+                                    </a>
                         </td>
                     </tr>
                 @endforeach
