@@ -38,4 +38,3 @@ Route::post('/auctions/{auction}/bids/{bid}/accept', [AuctionController::class, 
 
     Route::get('/message/create/{receiver}', [MessageController::class, 'create'])->name('messages.create');
 Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
-

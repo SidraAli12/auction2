@@ -38,5 +38,32 @@
         </div>
     </div>
 </div>
+
+
+<script>
+document.querySelector('#loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const alertBox = document.querySelector('#alert');
+
+  alertBox.textContent = ' Logging in...';
+  const data = new FormData(form);
+
+  const res = await fetch("{{ route('login') }}", {
+    method: "POST",
+    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+    body: data
+  });
+
+  if (res.ok) {
+    alertBox.textContent = ' Login successful! Redirecting...';
+    setTimeout(() => window.location.href = '/dashboard', 1000);
+  } else {
+    alertBox.textContent = ' Invalid email or password.';
+  }
+});
+</script>
+
+
 </body>
 </html>

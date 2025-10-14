@@ -5,7 +5,7 @@
     <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
-<body class="bg-light">
+< class="bg-light">
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -48,5 +48,34 @@
         </div>
     </div>
 </div>
+
+
+<script>
+document.querySelector('#registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const alertBox = document.querySelector('#alert');
+
+  alertBox.textContent = 'Please wait...';
+  const data = new FormData(form);
+
+  const res = await fetch("{{ route('register') }}", {
+    method: "POST",
+    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+    body: data
+  });
+
+  if (res.ok) {
+    alertBox.textContent = ' Registered successfully! Redirecting...';
+    setTimeout(() => window.location.href = '/dashboard', 1000);
+  } else {
+    const result = await res.json();
+    alertBox.textContent = result.message || ' Error! Please try again.';
+  }
+});
+</script>
+
+
+
 </body>
 </html>
