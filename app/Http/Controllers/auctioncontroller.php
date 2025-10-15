@@ -62,7 +62,7 @@ class AuctionController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('auctions.index')->with('success', 'Auction created successfully.');
+        return redirect()->route('auctions.index')->with('success', 'so your Auction created successfully.');
     }
 
     public function edit(Auction $auction)
