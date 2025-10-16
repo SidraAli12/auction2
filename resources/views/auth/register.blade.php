@@ -4,39 +4,47 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-< class="bg-light">
+<body class="bg-light">
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="card shadow">
                 <div class="card-body">
                     <h4 class="text-center mb-4">Register</h4>
-                    <form action="{{ route('register') }}" method="POST">
+
+                    <div id="alert"></div>
+
+                    <form id="registerForm">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
+                            <label class="form-label">Full Name</label>
                             <input type="text" name="name" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
+                            <label class="form-label">Email Address</label>
                             <input type="email" name="email" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label class="form-label">Password</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <label class="form-label">Confirm Password</label>
                             <input type="password" name="password_confirmation" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
-    <label for="role" class="form-label">Register as</label>
-    <select name="role" id="role" class="form-control" required>
-        <option value="buyer" {{ old('role') == 'buyer' ? 'selected' : '' }}>Buyer</option>
-        <option value="seller" {{ old('role') == 'seller' ? 'selected' : '' }}>Seller</option>
-    </select>
-</div>
+                            <label class="form-label">Register as</label>
+                            <select name="role" class="form-control" required>
+                                <option value="buyer">Buyer</option>
+                                <option value="seller">Seller</option>
+                            </select>
+                        </div>
 
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                         <div class="text-center mt-3">
@@ -49,33 +57,31 @@
     </div>
 </div>
 
-
 <script>
-document.querySelector('#registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const alertBox = document.querySelector('#alert');
+$('#registerForm').on('submit', function(e){
+    e.preventDefault();//ye fun Default form submit hone se rokta hai issey page rrelaod nhi hota 
+    let form = $(this);
+    $('#alert').html('<div class="alert alert-info">Please wait...</div>');
 
-  alertBox.textContent = 'Please wait...';
-  const data = new FormData(form);
-
-  const res = await fetch("{{ route('register') }}", {
-    method: "POST",
-    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-    body: data
-  });
-
-  if (res.ok) {
-    alertBox.textContent = ' Registered successfully! Redirecting...';
-    setTimeout(() => window.location.href = '/dashboard', 1000);
-  } else {
-    const result = await res.json();
-    alertBox.textContent = result.message || ' Error! Please try again.';
-  }
+    $.ajax({
+        url: "{{ route('register') }}",
+        type: "POST",
+        data: form.serialize(),//Form data serialize karke bhejty hai like name pass role
+        success: function(res){
+            $('#alert').html('<div class="alert alert-success"> Registered successfully! Redirecting...</div>');
+            setTimeout(() => window.location.href = "{{ route('dashboard') }}", 1000);
+        },
+        error: function(xhr){
+            let errors = xhr.responseJSON?.errors;
+            if(errors){
+                let list = Object.values(errors).flat().join('<br>');//Errors ko ek string me convert karta hai line by line.
+                $('#alert').html('<div class="alert alert-danger">'+list+'</div>');
+            } else {
+                $('#alert').html('<div class="alert alert-danger"> Something went wrong.</div>');
+            }
+        }
+    });
 });
 </script>
-
-
-
 </body>
 </html>

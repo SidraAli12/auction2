@@ -29,47 +29,30 @@
 @endsection
 
 @section('scripts')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('auctionForm');
-    const alertBox = document.getElementById('alertBox');
+$(document).ready(function(){
+    $("#auctionForm").on("submit", function(e){
+        e.preventDefault();
 
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault(); //this is going to skip the laoding 
-
-        alertBox.className = '';
-        alertBox.textContent = '';
-
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch("{{ route('auctions.store') }}", { //it is  security token zaroori hota hai 
-                                                                                 // POST requests me  warna 419 error aata hai.                                                              
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: formData
-            });
-
-            if (response.ok) {
-                alertBox.classList.add('alert', 'alert-success');
-                alertBox.textContent = 'Auction created successfully! Redirecting...';
-                setTimeout(() => window.location.href = "{{ route('auctions.index') }}", 500);
-            } 
-            else if (response.status === 422) {
-                const data = await response.json();
-                alertBox.classList.add('alert', 'alert-danger');
-                alertBox.innerHTML = Object.values(data.errors).flat().join('<br>');
-            } 
-            else {
-                alertBox.classList.add('alert', 'alert-danger');
-                alertBox.textContent = ' Something went wrong.';
+        $.ajax({
+            url: "{{ route('auctions.store') }}",//Request jati hai AuctionController@store() par
+            type: "POST",
+            data: $(this).serialize(),//then data serialize honga means server ko
+            success: function(res){
+                $("#successMessage").html(
+                    '<div class="alert alert-success">Auction created successfully!</div>'
+                );
+                setTimeout(() => window.location.href = "{{ route('auctions.index') }}", 800);
+            },
+            error: function(){
+                $("#successMessage").html(
+                    '<div class="alert alert-danger">Error while creating auction!</div>'
+                );
             }
-        } catch (err) {
-            alertBox.classList.add('alert', 'alert-danger');
-            alertBox.textContent = 'Server error: ' + err.message;
-        }
+        });
     });
 });
 </script>

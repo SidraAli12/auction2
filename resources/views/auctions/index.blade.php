@@ -58,13 +58,11 @@
                             {{-- Edit/Delete --}}
                             <a href="{{ route('auctions.edit', $auction->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                            <!-- <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this auction?')">Delete</button>
-                            </form> -->
-                            <button class="btn btn-sm btn-danger deleteAuction" data-id="{{ $auction->id }}">Delete</button>
-
+                            </form>
                         @endif
 
                         {{-- Buyer Action --}}
@@ -85,28 +83,4 @@
         </tbody>
     </table>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('click', async (e) => {
-  if (!e.target.classList.contains('deleteAuction')) return;
-
-  const id = e.target.dataset.id;
-  if (!confirm('Delete this auction?')) return;
-
-  try {
-    const res = await fetch(`/auctions/${id}`, {
-      method: 'DELETE',
-      headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
-    });
-    if (res.ok) {
-      e.target.closest('tr').remove();
-      alert('Auction deleted!');
-    } else alert('Failed to delete.');
-  } catch (err) {
-    alert('Server error');
-  }
-});
-</script>
 @endsection
