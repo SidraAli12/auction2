@@ -91,7 +91,8 @@ class AuctionController extends Controller
         $this->authorizeOwner($auction);
         $auction->delete();
 
-        return redirect()->route('auctions.index')->with('success', 'Auction deleted.');
+            return response()->json(['success' => true, 'message' => 'Auction deleted successfully.']);
+
     }
 
     private function authorizeOwner(Auction $auction)
