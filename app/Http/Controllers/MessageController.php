@@ -29,6 +29,11 @@ class MessageController extends Controller
             'message' => $req->message,
         ]);
 
-        return back()->with('success', 'Message sent!');
+       if ($req->ajax()) {
+    return response()->json(['success' => true, 'message' => 'Message sent!']);
+}
+
+return back()->with('success', 'Message sent!');
+
     }
 }

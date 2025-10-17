@@ -27,16 +27,19 @@
 </div>
 @endsection
 <script>
-document.querySelector('#editForm').onsubmit = async e => {
-    e.preventDefault(); 
-    let res = await fetch("{{ route('auctions.update finally', $auction->id) }}", {
-        method: 'POST', 
-        headers: { 'X-CSRF-TOKEN': document.querySelector('[name=_token]').value },
-        body: new FormData(e.target)
+$('#editForm').on('submit', function(e){
+    e.preventDefault(); //ye laod ko roky ga 
+    $.ajax({
+        url: "{{ route('auctions.update', $auction->id) }}",
+        method: "POST",
+        data: $(this).serialize(),
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        success: function(res){
+            alert('Auction updated successfully');
+        },
+        error: function(){
+            alert('Update failed!');
+        }
     });
-    if(Response.ok)
-        location.href = "{{ route('auctions.index') }}"; 
-    else
-        alert('your Update is failed!');
-};
+});
 </script>

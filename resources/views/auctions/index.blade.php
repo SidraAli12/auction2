@@ -58,11 +58,13 @@
                             {{-- Edit/Delete --}}
                             <a href="{{ route('auctions.edit', $auction->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                            <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
+                            <!-- <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this auction?')">Delete</button>
-                            </form>
+                            </form> -->
+                            <button class="btn btn-sm btn-danger deleteAuction" data-id="{{ $auction->id }}">Delete</button>
+
                         @endif
 
                         {{-- Buyer Action --}}
@@ -83,4 +85,32 @@
         </tbody>
     </table>
 </div>
+
+@endsection
+@section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).on('click', '.deleteAuction', function () {
+    let auctionId = $(this).data('id'); //it is going to take an id 
+    let confirmDelete = confirm("Are you sure you want to delete this auction?");
+    if (!confirmDelete) return;
+
+    $.ajax({
+        url: "/auctions/" + auctionId,
+        type: "DELETE",
+        data: {
+            _token: "{{ csrf_token() }}"
+        },
+        success: function (res) {
+            $("button[data-id='" + auctionId + "']").closest('tr').fadeOut(500, function(){// ye line auction ko auction list ko remove kary ga jo delete kiya hai 
+                $(this).remove();
+            });
+            alert("Auction deleted successfully!");
+        },
+        error: function () {
+            alert("Error deleting auction!");
+        }
+    });
+});
+</script>
 @endsection
