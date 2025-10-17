@@ -26,3 +26,17 @@
     </form>
 </div>
 @endsection
+<script>
+document.querySelector('#editForm').onsubmit = async e => {
+    e.preventDefault(); 
+    let res = await fetch("{{ route('auctions.update finally', $auction->id) }}", {
+        method: 'POST', 
+        headers: { 'X-CSRF-TOKEN': document.querySelector('[name=_token]').value },
+        body: new FormData(e.target)
+    });
+    if(Response.ok)
+        location.href = "{{ route('auctions.index') }}"; 
+    else
+        alert('your Update is failed!');
+};
+</script>
