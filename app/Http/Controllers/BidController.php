@@ -58,6 +58,13 @@ class BidController extends Controller
         'price' => $request->price,
         'winner' => false,
     ]);
+    if ($request->ajax()) {
+        return response()->json(['success' => true, 'message' => 'Bid placed successfully!']);
+    }
 
-    return redirect()->route('auctions.index')->with('success', 'Bid placed successfully!');
+
+
+    // return redirect()->route('auctions.index')->with('success', 'Bid placed successfully!');
+        return back()->with('success', 'Bid placed successfully!');
+
 }}
