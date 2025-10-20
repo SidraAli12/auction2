@@ -58,11 +58,7 @@
                             {{-- Edit/Delete --}}
                             <a href="{{ route('auctions.edit', $auction->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                            <!-- <form action="{{ route('auctions.destroy', $auction->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this auction?')">Delete</button>
-                            </form> -->
+                            
                             <button class="btn btn-sm btn-danger deleteAuction" data-id="{{ $auction->id }}">Delete</button>
 
                         @endif

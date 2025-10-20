@@ -4,7 +4,6 @@
 <div class="container mt-4">
     <h4>Message to {{ $receiver->name }}</h4>
 
-    {{-- Alert area for messages --}}
     <div id="alertBox"></div>
 
     <form id="messageForm" action="{{ route('messages.store') }}" method="POST">

@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <h3>Place a Bid on "{{ $auction->product }}"</h3>
 
-    <div id="alertBox"></div> {{-- yahan message show hoga --}}
+    <div id="alertBox"></div> 
 
     <form id="bidForm" method="POST">
         @csrf
